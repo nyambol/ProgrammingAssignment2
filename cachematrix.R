@@ -1,12 +1,13 @@
 #' These functions demonstrate the use of caching to prevent
 #' repetition of costly function calls.
+#' Michael Powe
+#' 20210926T062641
 
 
-#' Create a cached value in an alternative environment. This overcomes
-#' the lexical scope, for otherwise the value  By keeping the cached value in a separate
-#' enviroment, accidental modification of the value is prevented. This
-#' function sets attributes on the cached matrix that are used by the
-#' cacheSolve function.
+#' Create a cached value in the parent environment. This overcomes the
+#' lexical scope by keeping the cached value in a separate
+#' environment. This function also sets attributes on the cached
+#' matrix that are used by the `cacheSolve' function.
 #'
 #'
 #' @param x A square matrix
@@ -35,12 +36,13 @@ makeCacheMatrix <- function(x = matrix()) {
 #' Retrieve or set a cached value for the inverse of a given matrix.
 #' If a cached value is found, return it. Otherwise, calculate the
 #' inverse, store it in the cache and return it. This function only
-#' works with matrices created through the makeCacheMatrix function.
+#' works with matrices created through the `makeCacheMatrix'
+#' function. These have the attributes necessary to access the cache.
 #'
 #' @param x A square matrix
 #' @return inv The inverse of x
 #' @examples
-#' m <- matrix(sample(1:20,100,replace=TRUE),ncol=10)
+#' m <- makeCacheMatrix(matrix(sample(1:20,100,replace=TRUE),ncol=10))
 #' cacheSolve(m)
 #'
 
