@@ -1,5 +1,5 @@
 #' These functions demonstrate the use of caching to prevent
-#' repetition of costly function calls.
+#' repetition of possibly costly function calls.
 #' Michael Powe
 #' 20210926T062641
 
@@ -8,7 +8,6 @@
 #' lexical scope by keeping the cached value in a separate
 #' environment. This function also sets attributes on the cached
 #' matrix that are used by the `cacheSolve' function.
-#'
 #'
 #' @param x A square matrix
 #' @examples
@@ -39,22 +38,33 @@ makeCacheMatrix <- function(x = matrix()) {
 #' works with matrices created through the `makeCacheMatrix'
 #' function. These have the attributes necessary to access the cache.
 #'
-#' @param x A square matrix
+#' @param x A square matrix created through `makeCacheMatrix'
 #' @return inv The inverse of x
 #' @examples
-#' m <- makeCacheMatrix(matrix(sample(1:20,100,replace=TRUE),ncol=10))
-#' cacheSolve(m)
+#' cm <- makeCacheMatrix(matrix(sample(1:20,100,replace=TRUE),ncol=10))
+#' cacheSolve(cm)
 #'
+#' m <- matrix(sample(1:20, 100, replace=TRUE), ncol=10)
+#' cacheSolve(m)
+#' Error: $ operator is invalid for atomic vectors
+#'
+#' solve(m) == cacheSolve(cm)
+#' Using cached data
+#'      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#'  [1,] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE  TRUE
+#'  [...]
 
-cacheSolve <- function(x, ...) {
-    ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(x) {
+
+    # check for a cached inverse
     inv <- x$getInverse()
     if(!is.null(inv)) {
-        message("getting cached data")
+        message("Using cached data")
         return(inv)
     }
-    data <- x$get()
-    inv <- solve(data)
+    # no cache, create it and return the inverse
+    mat <- x$get()
+    inv <- solve(mat)
     x$setInverse(inv)
     inv
 }
