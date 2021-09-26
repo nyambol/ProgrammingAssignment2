@@ -1,7 +1,9 @@
 #' These functions demonstrate the use of caching to prevent
 #' repetition of possibly costly function calls.
 #' Michael Powe
-#' 20210926T062641
+#' 20210926T073826
+#' https://github.com/nyambol/ProgrammingAssignment2.git
+#' d85bb1690ad919e6f54970f5b050ac6ea8afad79
 
 
 #' Create a cached value in the parent environment. This overcomes the
